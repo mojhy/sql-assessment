@@ -13,6 +13,9 @@ def get_stuff(query):
     sql = query
     cursor.execute(sql)
     results = cursor.fetchall()
+    for number in results:
+        print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
+
 
 def add_animals():
     '''adds an animal'''
@@ -21,6 +24,7 @@ def add_animals():
 def select_by_ranking():
     '''selects * by the ranking'''
     search = input('what ranking? \n1. im COOKED \n 2. 1 percent chance I dont lose \n 3. ill probably lose \n4. I definitely have a chance \n5. Im whooping their ASS \n')
+    
 
 def select_all():
     '''selects all readible data'''
