@@ -8,6 +8,8 @@ import sqlite3
 DATABASE = "animals"
 
 # functions
+def ranking_help(value):
+    get_stuff(f'SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = {value};')
 def get_stuff(query):
     """get stuff"""
     db = sqlite3.connect('animals')
@@ -17,25 +19,32 @@ def get_stuff(query):
     results = cursor.fetchall()
     for number in results:
         print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
-
+def group_names():
+    print(' 86	Reptile,\n 87	Mammal,\n 88	Insect,\n 89	Arachnid,\n 90	Amphibian,\n 91	Bird,\n 92	Mollusk,\n 93	Cockroach,\n 94	Myriapod')
 
 def add_animals():
     '''adds an animal'''
-    get_stuff(f"INSERT INTO ANIMALS ( animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight ) VALUES ({input('animal name: ')}, {input('scientific name: ')}, {input('group: ')}, {input('ranking, 81 to 85, 81 is death')});")
+    animal_name = input('animal name: ')
+    scientific_name = input('scientific name: ')
+    group_names()
+    group = int(input('group: '))
+    ranking = int(input('ranking, 81 to 85, 81 is death: '))
+
+    get_stuff(f"INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES( '?', '?', '?', '?');, (animal_name, scientific_name, group, ranking,)")
 
 def select_by_ranking():
     '''selects * by the ranking'''
     search = int(input('what ranking? \n1. im COOKED \n2. 1 percent chance I dont lose \n3. ill probably lose \n4. I definitely have a chance \n5. Im whooping their ASS \n'))    
     if search == 1:
-        get_stuff('SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = 81;')
+        ranking_help(81)
     elif search == 2:
-        get_stuff('SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = 82;')
+        ranking_help(82)
     elif search == 3:
-        get_stuff('SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = 83;')
+       ranking_help(83)
     elif search == 4:
-        get_stuff('SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = 84;')
+        ranking_help(84)
     elif search == 5:
-        get_stuff('SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = 85;')
+        ranking_help(85)
 
 def select_all():
     '''selects all readible data'''
