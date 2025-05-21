@@ -14,18 +14,14 @@ cursor = db.cursor()
 def ranking_help(value):
     get_stuff(f'SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = {value};')
 
-def get_stuff(query, data):
+def get_stuff(query):
     """get stuff"""
-    if data == 0:
-        sql = query
-        cursor.execute(sql,)
-        results = cursor.fetchall()
-        for number in results:
-            print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
-    else:
-        sql = query
-        cursor.execute(sql, (data,))
-        results = cursor.fetchall()
+    sql = query
+    cursor.execute(sql,)
+    results = cursor.fetchall()
+    for number in results:
+        print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
+    
 
 def group_names():
     '''prints group names'''
@@ -38,7 +34,10 @@ def add_animals():
     group_names()
     group = int(input('group: '))
     ranking = int(input('ranking, 81 to 85, 81 is death: '))
-    get_stuff("INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES( '?', '?', '?', '?');" (animal_name, scientific_name, group, ranking,))
+    qurey = f"INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES('{animal_name.title()}', '{scientific_name.title()}', '{group}', '{ranking}');"
+    cursor.execute(qurey,)
+    
+    
 
 def select_by_ranking():
     '''selects * by the ranking'''
@@ -48,7 +47,7 @@ def select_by_ranking():
     elif search == 2:
         ranking_help(82)
     elif search == 3:
-       ranking_help(83)
+        ranking_help(83)
     elif search == 4:
         ranking_help(84)
     elif search == 5:
@@ -58,6 +57,10 @@ def select_all():
     '''selects all readible data'''
     get_stuff('SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id;')
 
+def search_animal():
+    '''search for a specific animal'''
+    animal = input('what animal would you like to search for? ').title()
+    get_stuff(f"select * from ANIMALS where animal_name = '{animal}';")
 # main code
 run = input('what do you want to do? ')
 while run.isnumeric() or not run.isnumeric():
@@ -66,10 +69,12 @@ while run.isnumeric() or not run.isnumeric():
         add_animals()
     elif run == '2':
         select_by_ranking()
-    elif run  == '3':
+    elif run == '3':
         select_all()
     elif run == 'exit':
         break
+    elif run == '4':
+        search_animal()
     else:
         print('no')
     run = input('what do you want to do? ')
