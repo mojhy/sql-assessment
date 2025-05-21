@@ -7,19 +7,28 @@ import sqlite3
 #constants and varible declaration
 DATABASE = "animals"
 
+db = sqlite3.connect('animals')
+cursor = db.cursor()
+
 # functions
 def ranking_help(value):
     get_stuff(f'SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = {value};')
-def get_stuff(query):
+
+def get_stuff(query, data):
     """get stuff"""
-    db = sqlite3.connect('animals')
-    cursor = db.cursor()
-    sql = query
-    cursor.execute(sql)
-    results = cursor.fetchall()
-    for number in results:
-        print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
+    if data == 0:
+        sql = query
+        cursor.execute(sql,)
+        results = cursor.fetchall()
+        for number in results:
+            print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
+    else:
+        sql = query
+        cursor.execute(sql, (data,))
+        results = cursor.fetchall()
+
 def group_names():
+    '''prints group names'''
     print(' 86	Reptile,\n 87	Mammal,\n 88	Insect,\n 89	Arachnid,\n 90	Amphibian,\n 91	Bird,\n 92	Mollusk,\n 93	Cockroach,\n 94	Myriapod')
 
 def add_animals():
@@ -29,8 +38,7 @@ def add_animals():
     group_names()
     group = int(input('group: '))
     ranking = int(input('ranking, 81 to 85, 81 is death: '))
-
-    get_stuff(f"INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES( '?', '?', '?', '?');, (animal_name, scientific_name, group, ranking,)")
+    get_stuff("INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES( '?', '?', '?', '?');" (animal_name, scientific_name, group, ranking,))
 
 def select_by_ranking():
     '''selects * by the ranking'''
