@@ -1,6 +1,6 @@
 #made by harrison - animals go brrrr
 #data was taken from reddit btw
-#all raings were made on the assumption that i have a small knife
+#all ratings were made on the assumption that i have a small knife
 #imports
 import sqlite3
 
@@ -65,8 +65,8 @@ def search_animal():
     get_stuff(f"select * from ANIMALS where animal_name = '{animal}';")
 
 def kill_an_animal():
-    animal = input('what animal would you like to kill? ')
-    query = f'Delete from animals where animal_name = {animal.title};'
+    animal = input('what animal would you like to kill? ').title()
+    query = f'Delete from animals where animal_name = {animal.title()};'
     cursor.execute(query, )
 
 def edit_an_animal():
@@ -82,11 +82,16 @@ def edit_an_animal():
     query = f"UPDATE animals SET {columm} = '{changes}' WHERE animal_name = '{change}';"
     cursor.execute(query,)
 
-
+def advanced_():
+    cursor.execute(input('Write your own query: '))
+    results = cursor.fetchall()
+    for number in results:
+        print(f"     {number}")
+    
 # main code
 
-print('1. add an animal\n2. select by ranking\n3. slect all\n4. search for an animal\n5. kill an animal\nexit')
-run = input('what do you want to do? ')
+print('1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit')
+run = input('what do you want to do? (enter a number) ')
 while run.isnumeric() or not run.isnumeric():
     
     if run == '1':
@@ -103,8 +108,10 @@ while run.isnumeric() or not run.isnumeric():
         kill_an_animal()
     elif run == '6':
         edit_an_animal()
+    elif run == '7':
+        advanced_()
     else:
         print('no')
     
-    print('1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n exit')
+    print('1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit')
     run = input('what do you want to do? ')
