@@ -7,6 +7,7 @@ import sqlite3
 #constants and varible declaration
 DATABASE = "animals"
 
+options = '1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit'
 db = sqlite3.connect('animals')
 cursor = db.cursor()
 
@@ -87,10 +88,10 @@ def advanced_():
     results = cursor.fetchall()
     for number in results:
         print(f"     {number}")
-    
+
 # main code
 
-print('1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit')
+print(options)
 run = input('what do you want to do? (enter a number) ')
 while run.isnumeric() or not run.isnumeric():
     
@@ -113,5 +114,5 @@ while run.isnumeric() or not run.isnumeric():
     else:
         print('no')
     
-    print('1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit')
+    print(options)
     run = input('what do you want to do? ')
