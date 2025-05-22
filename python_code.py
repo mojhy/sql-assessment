@@ -85,7 +85,7 @@ def edit_an_animal():
 
 # main code
 
-print('1. add an animal\n2. select by ranking\n3. slect all\n4. search for an animal\n5. kill an animal\n exit')
+print('1. add an animal\n2. select by ranking\n3. slect all\n4. search for an animal\n5. kill an animal\nexit')
 run = input('what do you want to do? ')
 while run.isnumeric() or not run.isnumeric():
     
@@ -106,5 +106,5 @@ while run.isnumeric() or not run.isnumeric():
     else:
         print('no')
     
-    print('1. add an animal\n2. select by ranking\n3. slect all\n4. search for an animal\n5. kill an animal\n exit')
+    print('1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n exit')
     run = input('what do you want to do? ')
