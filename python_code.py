@@ -61,6 +61,12 @@ def search_animal():
     '''search for a specific animal'''
     animal = input('what animal would you like to search for? ').title()
     get_stuff(f"select * from ANIMALS where animal_name = '{animal}';")
+
+def kill_an_animal():
+    animal = input('what animal would you like to kill? ')
+    query = f'Delete from animals where animal_name = {animal.title};'
+    cursor.execute(query, )
+
 # main code
 run = input('what do you want to do? ')
 while run.isnumeric() or not run.isnumeric():
@@ -75,6 +81,9 @@ while run.isnumeric() or not run.isnumeric():
         break
     elif run == '4':
         search_animal()
+    elif run == '5':
+        kill_an_animal()
     else:
         print('no')
+    
     run = input('what do you want to do? ')
