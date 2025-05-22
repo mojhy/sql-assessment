@@ -22,7 +22,9 @@ def get_stuff(query):
     for number in results:
         print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
     
-
+def ranking_nums():
+    print('from 81 being death, to 85 being easy as hell, ')
+    print('81, 82, 83, 84, 85,')
 def group_names():
     '''prints group names'''
     print(' 86	Reptile,\n 87	Mammal,\n 88	Insect,\n 89	Arachnid,\n 90	Amphibian,\n 91	Bird,\n 92	Mollusk,\n 93	Cockroach,\n 94	Myriapod')
@@ -67,7 +69,23 @@ def kill_an_animal():
     query = f'Delete from animals where animal_name = {animal.title};'
     cursor.execute(query, )
 
+def edit_an_animal():
+    print('DO NOT CHANGE ANIMAL idS!!!!!!!!!!!!!!!')
+    change = input('what animal do you want to change? ')
+    print('columms are; \nanimal_name\nscientific_name\ncould_i_take_it_in_a_fight\nanimal_info(group)')
+    columm = input('what columm do you want to edit? ')
+    if columm == 'could_i_take_it_in_a_fight':
+        ranking_nums()
+    if columm == 'group':
+        group_names()
+    changes = input("what do you want to change it to? ")
+    query = f"UPDATE animals SET {columm} = '{changes}' WHERE animal_name = '{change}';"
+    cursor.execute(query,)
+
+
 # main code
+
+print('1. add an animal\n2. select by ranking\n3. slect all\n4. search for an animal\n5. kill an animal\n exit')
 run = input('what do you want to do? ')
 while run.isnumeric() or not run.isnumeric():
     
@@ -77,13 +95,16 @@ while run.isnumeric() or not run.isnumeric():
         select_by_ranking()
     elif run == '3':
         select_all()
-    elif run == 'exit':
+    elif run.lower() == 'exit':
         break
     elif run == '4':
         search_animal()
     elif run == '5':
         kill_an_animal()
+    elif run == '6':
+        edit_an_animal()
     else:
         print('no')
     
+    print('1. add an animal\n2. select by ranking\n3. slect all\n4. search for an animal\n5. kill an animal\n exit')
     run = input('what do you want to do? ')
