@@ -3,6 +3,7 @@
 #all ratings were made on the assumption that i have a small knife
 #imports
 import sqlite3
+from tabulate import tabulate
 #colour declaraions
 r = '\033[31m'
 g = '\033[32m'
@@ -17,7 +18,7 @@ bp = '\033[45m'
 #constants and varible declaration
 DATABASE = "animals"
 
-options = '1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit'
+options = f'{y}1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit{reset}'
 db = sqlite3.connect('animals')
 cursor = db.cursor()
 
@@ -28,21 +29,23 @@ def exit_check(check):
         return True
 
 def ranking_help(value):
+    """helps"""
     get_stuff(f'SELECT ANIMALS.animal_id, ANIMALS.animal_name, ANIMALS.scientific_name, RANKING.could_i_take_it AS fight_rating, INFO."group" AS animal_group FROM ANIMALS JOIN RANKING ON ANIMALS.could_i_take_it_in_a_fight = RANKING.rank_id JOIN INFO ON ANIMALS.animal_info = INFO.info_id where could_i_take_it_in_a_fight = {value};')
-
 def get_stuff(query):
     """get stuff"""
     sql = query
     cursor.execute(sql,)
     results = cursor.fetchall()
-    for number in results:
-        print(f"     {number[0]:<5}{number[1]:<40}{number[2]:<35} {number[4]:<15} {number[3]}")
- 
+    headers = [description[0] for description in cursor.description]
+    print(tabulate(results, headers=headers, tablefmt='github'))
+
 def ranking_nums():
+    """prints some number"""
     print(f'{y}from 81 being death, to 85 being easy as hell, {reset}')
     print(f'{y}81, 82, 83, 84, 85,{reset}')
 
 def group_names():
+    """print the group names"""
     '''prints group names'''
     print(f'{y} 86	Reptile,\n 87	Mammal,\n 88	Insect,\n 89	Arachnid,\n 90	Amphibian,\n 91	Bird,\n 92	Mollusk,\n 93	Cockroach,\n 94	Myriapod{reset}')
 
@@ -66,11 +69,10 @@ def add_animals():
 
 def select_by_ranking():
     '''select * by the ranking'''
-    search = input(f'{y}1. im COOKED \n2. 1 percent chance I dont lose \n3. ill probably lose \n4. I definitely have a chance \n5. Im whooping their ASS \n{bb}what ranking? \n{reset}')    
+    search = input(f'{y}1. im COOKED \n2. 1 percent chance I dont lose \n3. ill probably lose \n4. I definitely have a chance \n5. Im whooping their ASS \n{bb}what ranking? \n{reset}')
     if exit_check(search):
         return
-    while run.isnumeric() or not run.isnumeric():
-    if int(search) == 1:
+    if   int(search) == 1:
         ranking_help(81)
     elif int(search) == 2:
         ranking_help(82)
@@ -93,6 +95,7 @@ def search_animal():
     get_stuff(f"select * from ANIMALS where animal_name = '{animal}';")
 
 def kill_an_animal():
+    """kills an animal"""
     animal = input(f'{bb}what animal would you like to kill? {reset}').title()
     if exit_check(animal):
         return
@@ -100,6 +103,7 @@ def kill_an_animal():
     cursor.execute(query, )
 
 def edit_an_animal():
+    """edits an animal"""
     print(f'{br}DO NOT CHANGE ANIMAL idS!!!!!!!!!!!!!!!{reset}')
     change = input(f'{bb}what animal do you want to change? {reset}')
     if exit_check(change):
@@ -119,13 +123,14 @@ def edit_an_animal():
     cursor.execute(query,)
 
 def advanced_():
+    """write ur own query"""
     Qss = input(f'{bb}Write your own query: {reset}')
     if exit_check(Qss):
         return
-    cursor.execute(input(Qss))
+    cursor.execute(Qss)
     results = cursor.fetchall()
-    for number in results:
-        print(f"     {number}")
+    headers = [description[0] for description in cursor.description]
+    print(tabulate(results, headers=headers, tablefmt='github'))
 
 # main code
 
