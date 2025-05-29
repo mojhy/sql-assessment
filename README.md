@@ -1,2 +1,2 @@
-please type in "pip install tabulate" before running my code
-thank you
+please type in "pip install tabulate" in the terminal before running my code
+thank you 
