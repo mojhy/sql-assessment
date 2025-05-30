@@ -20,7 +20,7 @@ DATABASE = "animals.db"
 
 password = 'brentonisgae'
 options = f'{y}1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit{reset}'
-db = sqlite3.connect('animals') # connects to my database
+db = sqlite3.connect(DATABASE) # connects to my database
 cursor = db.cursor() # makes future code more efficient
 
 # functions
