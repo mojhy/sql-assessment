@@ -105,16 +105,21 @@ def search_animal(): # this funtion searches for a specific animal by their name
 
 def kill_an_animal(): # this function deleates an animal from the database
     """kills an animal"""
-    try:
-        animal = input(f'{bb}what animal would you like to kill? {reset}').title() # this inputs the animal that is going to be deleated
-        if exit_check(animal): # checks if the varible is an exit thingamiboba
-            return
-        query = f"Delete from animals where animal_name = '{animal.title()}';"
-        cursor.execute(query, )
-    except ValueError:
-        print(f'{br}Please enter numbers only.{reset}')
-    except sqlite3.Error as e:
-        print(f'{br}Database error: {e}{reset}')
+    user = input("password? ")
+    if user == password:
+        try:
+            animal = input(f'{bb}what animal would you like to kill? {reset}').title() # this inputs the animal that is going to be deleated
+            if exit_check(animal): # checks if the varible is an exit thingamiboba
+                return
+            query = f"Delete from animals where animal_name = '{animal.title()}';"
+            cursor.execute(query, )
+            print(f"{bg}Animal killed sucessfully{reset}")
+        except ValueError:
+            print(f'{br}Please enter numbers only.{reset}')
+        except sqlite3.Error as e:
+            print(f'{br}Database error: {e}{reset}')
+    else:
+        print(f'{br}invalid password{reset}')
 
 def edit_an_animal(): # this function lets the user edit an animal
     """edits an animal"""
@@ -161,7 +166,7 @@ def advanced_(): # i added this because i was bored and the data isnt live anywa
         except sqlite3.Error as e:
             print(f'{br}Database error: {e}{reset}')
     else:
-        ("incorrect password")
+        print(f"{br}incorrect password{reset}")
 
 # main code
 
