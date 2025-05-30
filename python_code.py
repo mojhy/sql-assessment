@@ -18,6 +18,7 @@ bp = '\033[45m' # sets background colour to pink
 #constants and varible declaration
 DATABASE = "animals"
 
+password = 'brentonisgae'
 options = f'{y}1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit{reset}'
 db = sqlite3.connect('animals') # connects to my database
 cursor = db.cursor() # makes future code more efficient
@@ -70,9 +71,9 @@ def add_animals(): # this function lets the user add a animal
         cursor.execute(qurey,) # this executes the query
         db.commit()
     except ValueError:
-        print('Please enter numbers only.')
+        print(f'{br}Please enter numbers only.{reset}')
     except sqlite3.Error as e:
-        print(f'Database error: {e}')
+        print(f'{br}Database error: {e}{reset}')
 
 def select_by_ranking(): # this function will print all animals of 1 ranking
     '''select * by the ranking'''
@@ -111,9 +112,9 @@ def kill_an_animal(): # this function deleates an animal from the database
         query = f"Delete from animals where animal_name = '{animal.title()}';"
         cursor.execute(query, )
     except ValueError:
-        print('Please enter numbers only.')
+        print(f'{br}Please enter numbers only.{reset}')
     except sqlite3.Error as e:
-        print(f'Database error: {e}')
+        print(f'{br}Database error: {e}{reset}')
 
 def edit_an_animal(): # this function lets the user edit an animal
     """edits an animal"""
@@ -135,26 +136,32 @@ def edit_an_animal(): # this function lets the user edit an animal
             return
         query = f"UPDATE animals SET {columm} = '{changes}' WHERE animal_name = '{change}';"
         cursor.execute(query,)
+        db.commit()
     except ValueError:
-        print('Please enter numbers only.')
+        print(f'{br}Please enter numbers only.{reset}')
     except sqlite3.Error as e:
-        print(f'Database error: {e}')
+        print(f'{br}Database error: {e}{reset}')
         
 
 def advanced_(): # i added this because i was bored and the data isnt live anyway so it doesnt matter too much if they deleate the database
     """write ur own query"""
-    try:
-        Qss = input(f'{bb}Write your own query: {reset}')
-        if exit_check(Qss): # checks if the varible is an exit thingamiboba
-            return
-        cursor.execute(Qss)
-        results = cursor.fetchall()
-        headers = [description[0] for description in cursor.description]
-        print(tabulate(results, headers=headers, tablefmt='github'))
-    except ValueError:
-        print('Please enter numbers only.')
-    except sqlite3.Error as e:
-        print(f'Database error: {e}')
+    user = (input(f"{bb}password? {reset}"))
+    if user == password:
+        try:
+            Qss = input(f'{bb}Write your own query: {reset}')
+            if exit_check(Qss): # checks if the varible is an exit thingamiboba
+                return
+            cursor.execute(Qss)
+            results = cursor.fetchall()
+            headers = [description[0] for description in cursor.description]
+            print(tabulate(results, headers=headers, tablefmt='github'))
+            db.commit()
+        except ValueError:
+            print(f'{br}Please enter numbers only.{reset}')
+        except sqlite3.Error as e:
+            print(f'{br}Database error: {e}{reset}')
+    else:
+        ("incorrect password")
 
 # main code
 
