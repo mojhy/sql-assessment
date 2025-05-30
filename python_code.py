@@ -67,7 +67,8 @@ def add_animals(): # this function lets the user add a animal
             return
         # this is the query that will be executed
         qurey = f"INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES('{animal_name.title()}', '{scientific_name.title()}', '{int(group)}', '{int(ranking)}');" 
-        cursor.execute(qurey,) # thuis executes the query
+        cursor.execute(qurey,) # this executes the query
+        db.commit()
     except ValueError:
         print('Please enter numbers only.')
     except sqlite3.Error as e:
