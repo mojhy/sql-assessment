@@ -5,16 +5,16 @@
 import sqlite3
 from tabulate import tabulate
 #colour declaraions
-r = '\033[31m'
-g = '\033[32m'
-y = '\033[33m'
-b = '\033[34m'
-reset = '\033[0m'
-br = '\033[41m'
-bg = '\033[42m'
-by = '\033[43m'
-bb = '\033[44m'
-bp = '\033[45m'
+r = '\033[31m' # sets colour to red
+g = '\033[32m' # sets colour to green
+y = '\033[33m' # sets colour to yellow
+b = '\033[34m' # sets colour to blue
+reset = '\033[0m' # resets the colour to default
+br = '\033[41m' # sets background colour to red
+bg = '\033[42m' # sets background colour to green
+by = '\033[43m' # sets background colour to yellow
+bb = '\033[44m' # sets background colour to blue
+bp = '\033[45m' # sets background colour to pink
 #constants and varible declaration
 DATABASE = "animals"
 
@@ -51,22 +51,27 @@ def group_names(): # this function prints out the group names so i dont have to 
 
 def add_animals(): # this function lets the user add a animal
     '''adds an animal'''
-    animal_name = input(f'{bb}animal name: {reset}') # animal name
-    if exit_check(animal_name): # checks if the varible is an exit thingamiboba
-        return
-    scientific_name = input(f'{bb}scientific name: {reset}') # takes the scientific name of the animal being added
-    if exit_check(scientific_name): # checks if the varible is an exit thingamiboba
-        return
-    group_names()
-    group = input(f'{bb}group: {reset}') # takes the group on the animal being added
-    if exit_check(group): # checks if the varible is an exit thingamiboba
-        return
-    ranking = input(f'{bb}ranking, 81 to 85, 81 is death: {reset}') # takes the ranking of the animal being added
-    if exit_check(ranking): # checks if the varible is an exit thingamiboba
-        return
-    # this is the query that will be executed
-    qurey = f"INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES('{animal_name.title()}', '{scientific_name.title()}', '{int(group)}', '{int(ranking)}');" 
-    cursor.execute(qurey,) # thuis executes the query
+    try:
+        animal_name = input(f'{bb}animal name: {reset}') # animal name
+        if exit_check(animal_name): # checks if the varible is an exit thingamiboba
+            return
+        scientific_name = input(f'{bb}scientific name: {reset}') # takes the scientific name of the animal being added
+        if exit_check(scientific_name): # checks if the varible is an exit thingamiboba
+            return
+        group_names()
+        group = input(f'{bb}group: {reset}') # takes the group on the animal being added
+        if exit_check(group): # checks if the varible is an exit thingamiboba
+            return
+        ranking = input(f'{bb}ranking, 81 to 85, 81 is death: {reset}') # takes the ranking of the animal being added
+        if exit_check(ranking): # checks if the varible is an exit thingamiboba
+            return
+        # this is the query that will be executed
+        qurey = f"INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES('{animal_name.title()}', '{scientific_name.title()}', '{int(group)}', '{int(ranking)}');" 
+        cursor.execute(qurey,) # thuis executes the query
+    except ValueError:
+        print('Please enter numbers only.')
+    except sqlite3.Error as e:
+        print(f'Database error: {e}')
 
 def select_by_ranking(): # this function will print all animals of 1 ranking
     '''select * by the ranking'''
@@ -98,41 +103,57 @@ def search_animal(): # this funtion searches for a specific animal by their name
 
 def kill_an_animal(): # this function deleates an animal from the database
     """kills an animal"""
-    animal = input(f'{bb}what animal would you like to kill? {reset}').title() # this inputs the animal that is going to be deleated
-    if exit_check(animal): # checks if the varible is an exit thingamiboba
-        return
-    query = f'Delete from animals where animal_name = {animal.title()};'
-    cursor.execute(query, )
+    try:
+        animal = input(f'{bb}what animal would you like to kill? {reset}').title() # this inputs the animal that is going to be deleated
+        if exit_check(animal): # checks if the varible is an exit thingamiboba
+            return
+        query = f"Delete from animals where animal_name = '{animal.title()}';"
+        cursor.execute(query, )
+    except ValueError:
+        print('Please enter numbers only.')
+    except sqlite3.Error as e:
+        print(f'Database error: {e}')
 
 def edit_an_animal(): # this function lets the user edit an animal
     """edits an animal"""
-    print(f'{br}DO NOT CHANGE ANIMAL idS!!!!!!!!!!!!!!!{reset}')
-    change = input(f'{bb}what animal do you want to change? {reset}') # this inputs the animal that the user wants to change
-    if exit_check(change): # checks if the varible is an exit thingamiboba
-        return
-    print(f'{y}columms are; \nanimal_name\nscientific_name\ncould_i_take_it_in_a_fight\nanimal_info(group){reset}')
-    columm = input(f'{bb}what columm do you want to edit? {reset}') # these are the columms
-    if exit_check(columm): # checks if the varible is an exit thingamiboba
-        return
-    if columm == 'could_i_take_it_in_a_fight':
-        ranking_nums()
-    if columm == 'group':
-        group_names()
-    changes = input(f"{bb}what do you want to change it to? {reset}")
-    if exit_check(changes): # checks if the varible is an exit thingamiboba
-        return
-    query = f"UPDATE animals SET {columm} = '{changes}' WHERE animal_name = '{change}';"
-    cursor.execute(query,)
+    try:
+        print(f'{br}DO NOT CHANGE ANIMAL idS!!!!!!!!!!!!!!!{reset}')
+        change = input(f'{bb}what animal do you want to change? {reset}') # this inputs the animal that the user wants to change
+        if exit_check(change): # checks if the varible is an exit thingamiboba
+            return
+        print(f'{y}columms are; \nanimal_name\nscientific_name\ncould_i_take_it_in_a_fight\nanimal_info(group){reset}')
+        columm = input(f'{bb}what columm do you want to edit? {reset}') # these are the columms
+        if exit_check(columm): # checks if the varible is an exit thingamiboba
+            return
+        if columm == 'could_i_take_it_in_a_fight':
+            ranking_nums()
+        if columm == 'group':
+            group_names()
+        changes = input(f"{bb}what do you want to change it to? {reset}")
+        if exit_check(changes): # checks if the varible is an exit thingamiboba
+            return
+        query = f"UPDATE animals SET {columm} = '{changes}' WHERE animal_name = '{change}';"
+        cursor.execute(query,)
+    except ValueError:
+        print('Please enter numbers only.')
+    except sqlite3.Error as e:
+        print(f'Database error: {e}')
+        
 
 def advanced_(): # i added this because i was bored and the data isnt live anyway so it doesnt matter too much if they deleate the database
     """write ur own query"""
-    Qss = input(f'{bb}Write your own query: {reset}')
-    if exit_check(Qss): # checks if the varible is an exit thingamiboba
-        return
-    cursor.execute(Qss)
-    results = cursor.fetchall()
-    headers = [description[0] for description in cursor.description]
-    print(tabulate(results, headers=headers, tablefmt='github'))
+    try:
+        Qss = input(f'{bb}Write your own query: {reset}')
+        if exit_check(Qss): # checks if the varible is an exit thingamiboba
+            return
+        cursor.execute(Qss)
+        results = cursor.fetchall()
+        headers = [description[0] for description in cursor.description]
+        print(tabulate(results, headers=headers, tablefmt='github'))
+    except ValueError:
+        print('Please enter numbers only.')
+    except sqlite3.Error as e:
+        print(f'Database error: {e}')
 
 # main code
 
