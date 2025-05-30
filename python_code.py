@@ -27,6 +27,7 @@ cursor = db.cursor() # makes future code more efficient
 def exit_check(check):
     """checks if a input is exit"""
     if check.lower() == "exit":
+        print('exited back to main page')
         return True
 
 def ranking_help(value): # this function is only used in 5 instinces, and only exists because sriram and mahi were mad at me
@@ -70,8 +71,9 @@ def add_animals(): # this function lets the user add a animal
         qurey = f"INSERT INTO ANIMALS (animal_name, scientific_name, animal_info, could_i_take_it_in_a_fight) VALUES('{animal_name.title()}', '{scientific_name.title()}', '{int(group)}', '{int(ranking)}');" 
         cursor.execute(qurey,) # this executes the query
         db.commit()
+        print(f"{g}animal added successfully{reset}")
     except ValueError:
-        print(f'{br}Please enter numbers only.{reset}')
+        print(f'{br}Please enter valid inputs only.{reset}')
     except sqlite3.Error as e:
         print(f'{br}Database error: {e}{reset}')
 
@@ -115,7 +117,7 @@ def kill_an_animal(): # this function deleates an animal from the database
             cursor.execute(query, )
             print(f"{bg}Animal killed sucessfully{reset}")
         except ValueError:
-            print(f'{br}Please enter numbers only.{reset}')
+            print(f'{br}Please enter valid inputs only.{reset}')
         except sqlite3.Error as e:
             print(f'{br}Database error: {e}{reset}')
     else:
@@ -142,11 +144,12 @@ def edit_an_animal(): # this function lets the user edit an animal
         query = f"UPDATE animals SET {columm} = '{changes}' WHERE animal_name = '{change}';"
         cursor.execute(query,)
         db.commit()
+        print(f"{g}animal edited successfully{reset}")
     except ValueError:
-        print(f'{br}Please enter numbers only.{reset}')
+        print(f'{br}Please enter valid inputs only.{reset}')
     except sqlite3.Error as e:
         print(f'{br}Database error: {e}{reset}')
-        
+       
 
 def advanced_(): # i added this because i was bored and the data isnt live anyway so it doesnt matter too much if they deleate the database
     """write ur own query"""
@@ -161,8 +164,9 @@ def advanced_(): # i added this because i was bored and the data isnt live anywa
             headers = [description[0] for description in cursor.description]
             print(tabulate(results, headers=headers, tablefmt='github'))
             db.commit()
+            print(f'{g}query ran successfully{reset}')
         except ValueError:
-            print(f'{br}Please enter numbers only.{reset}')
+            print(f'{br}Please enter valid inputs only.{reset}')
         except sqlite3.Error as e:
             print(f'{br}Database error: {e}{reset}')
     else:
@@ -191,7 +195,7 @@ while run.isnumeric() or not run.isnumeric():
     elif run == '7':
         advanced_()
     else:
-        print(f'{r}nthat is not an option{reset}')
+        print(f'{r}that is not an option{reset}')
     
     print(options)
     run = input(f'{bb}what do you want to do? {reset}')
