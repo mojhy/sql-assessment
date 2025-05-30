@@ -16,7 +16,7 @@ by = '\033[43m' # sets background colour to yellow
 bb = '\033[44m' # sets background colour to blue
 bp = '\033[45m' # sets background colour to pink
 #constants and varible declaration
-DATABASE = "animals"
+DATABASE = "animals.db"
 
 password = 'brentonisgae'
 options = f'{y}1. add an animal\n2. select by ranking\n3. select all\n4. search for an animal\n5. kill an animal\n6. edit an animal\n7. advanced\nexit{reset}'
